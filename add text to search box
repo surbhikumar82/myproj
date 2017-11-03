@@ -1,0 +1,23 @@
+Feature:
+	'When I go to the search page, and I add text to search box,
+		I expect to see some reference to that item in the result summary.'
+
+Scenario:
+	Given that I have gone to the Springer page
+	When I add "tobacco" to the search box
+	And click the Search Button
+	Then "tobacco" should be mentioned in the results
+
+
+require 'selenium-webdriver'
+
+browser = Selenium::WebDriver.for :firefox
+browser.navigate.to 'https://link.springer.com/'
+
+wait = Selenium::WebDriver::Wait.new(:timeout => 15)
+
+# Add text to a text box
+input = wait.until {
+    element = browser.find_element(:name, "searchbox")
+    element if element.displayed?
+}
