@@ -1,0 +1,28 @@
+Feature:
+	'When I go to the search page, and search for an item,
+		I expect to see some reference to that item in the result summary.'
+
+Scenario:
+	Given that I have gone to the Springer page
+	When I add "tobacco" to the search box
+	And click the Search Button
+	Then "tobacco" should be mentioned in the results
+
+  require 'selenium-webdriver'
+
+  browser = Selenium::WebDriver.for :firefox
+  browser.navigate.to 'https://link.springer.com/'
+
+  wait = Selenium::WebDriver::Wait.new(:timeout => 15)
+
+  When /^I add "(.*)" to the search box$/ do |item|
+    browser.find_element(:name, 'q').send_keys(item)
+  end
+
+  And /^click the Search Button$/ do
+    browser.find_element(:name, 'btnG').click
+  end
+
+  Then /^"(.*)" should be mentioned in the results$/ do |item|
+    browser.title.should include(item)
+    browser.quit
